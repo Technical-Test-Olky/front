@@ -5,3 +5,11 @@ export interface Image {
   selfLink: string;
   prediction: string;
 }
+
+export type ApiImage = {
+  currentItems: number;
+  currentPage: number;
+  dataList: Image[];
+  totalItems: number;
+  totalPages: number;
+};

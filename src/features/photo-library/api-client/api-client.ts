@@ -1,46 +1,30 @@
-import { toast } from "react-toastify";
-import type { Image } from "../../../types/image";
-
 export const ApiClient = {
-  search: async (query: string = ""): Promise<Image[]> => {
+  search: async (query: string) => {
     const response = await fetch(
-      `http://localhost:8080/images/search?name=${encodeURIComponent(query)}`
+      `http://localhost:8083/images/search?key=${encodeURIComponent(query)}`
     );
     return response.json();
   },
 
-  upload: async (file: File): Promise<Image> => {
+  upload: async (file: File) => {
     const formData = new FormData();
-    formData.append("sampleFile", file);
+    formData.append("dataFile", file);
 
-    const res = await fetch("http://localhost:8080/upload", {
+    const res = await fetch("http://localhost:8083/images/upload", {
       method: "POST",
       body: formData,
     });
 
     if (!res.ok) {
-      return {} as Image;
+      throw new Error("Failed to upload file");
     }
-
-    toast("🦄 Image ajouté à firebase!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
-    return {} as Image;
   },
 
-  findAll: async (): Promise<Image[]> => {
-    const res = await fetch("http://localhost:8080/images");
-    if (!res) {
-      return [];
-    }
-    return (await res.json()) as Image[];
+  get: async (page: number, size: number) => {
+    const res = await fetch(
+      `http://localhost:8083/images?page=${page}&size=${size}`
+    );
+
+    return await res.json();
   },
 };

@@ -1,22 +1,29 @@
 import { useState } from "react";
 import { ApiClient } from "../api-client/api-client";
-import { Image } from "../../../types/image";
+import type { Image } from "../../../types/image";
+
+type PhotoLibraryResult = Image;
 
 export const usePhotoLibrary = () => {
-  const [results, setResults] = useState<Image[]>([]);
+  const [results, setResults] = useState<PhotoLibraryResult[]>([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
   const search = async (query: string) => {
     setResults(await ApiClient.search(query));
   };
 
-  const upload = async (file: File) => {
+  const upload = async (file: File, limit: number) => {
     await ApiClient.upload(file);
+    await get(0, limit);
   };
 
-  const findAll = async () => {
-    await ApiClient.findAll();
-    setResults(await ApiClient.findAll());
+  const get = async (page: number, size: number) => {
+    const results = await ApiClient.get(page, size);
+    setResults(results.dataList);
+    setTotalItems(results.totalItems || 0);
+    setTotalPages(results.totalPages || 1);
   };
 
-  return { results, search, upload, findAll };
+  return { results, search, upload, get, totalPages, totalItems };
 };

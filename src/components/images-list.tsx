@@ -1,11 +1,19 @@
 import type { Image } from "../types/image";
 
-const ImageList = ({ images }: { images: Image[] }) => {
+const ImageList = ({ listImage }: { listImage: Image[] }) => {
+  console.log(listImage);
+  if (listImage.length === 0) {
+    return (
+      <div className="flex items-center justify-center">
+        <div className="text-gray-400">No images found</div>
+      </div>
+    );
+  }
+
   return (
     <>
-      {" "}
       <div className="grid grid-cols-6 gap-4 items-center justify-center">
-        {images.map((image: Image) => (
+        {listImage.map((image: Image) => (
           <div className="col-span-1" key={image.id}>
             <div>
               <div className="flex max-w-sm w-full bg-white shadow-md rounded-lg overflow-hidden mx-auto">

@@ -15,7 +15,7 @@ export const SearchBar = ({
     delayRequest("search", () => {
       onSearch(search);
     });
-  }, [search, onSearch]);
+  }, [search]);
 
   const chooseFile = () => {
     const input = document.createElement("input");
