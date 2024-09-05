@@ -16,6 +16,7 @@ export const usePhotoLibrary = () => {
   const upload = async (file: File, limit: number) => {
     await ApiClient.upload(file);
     await get(0, limit);
+    setResults([]);
   };
 
   const get = async (page: number, size: number) => {

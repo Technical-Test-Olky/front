@@ -14,7 +14,6 @@ export const ApiClient = {
       method: "POST",
       body: formData,
     });
-
     if (!res.ok) {
       throw new Error("Failed to upload file");
     }
@@ -24,6 +23,9 @@ export const ApiClient = {
     const res = await fetch(
       `http://localhost:8083/images?page=${page}&size=${size}`
     );
+    if (!res.ok) {
+      throw new Error("Failed to fetch images");
+    }
 
     return await res.json();
   },

@@ -1,7 +1,6 @@
 import type { Image } from "../types/image";
 
 const ImageList = ({ listImage }: { listImage: Image[] }) => {
-  console.log(listImage);
   if (listImage.length === 0) {
     return (
       <div className="flex items-center justify-center">
@@ -12,7 +11,7 @@ const ImageList = ({ listImage }: { listImage: Image[] }) => {
 
   return (
     <>
-      <div className="grid grid-cols-6 gap-4 items-center justify-center">
+      <div className="grid grid-cols-5 gap-4 items-center justify-center">
         {listImage.map((image: Image) => (
           <div className="col-span-1" key={image.id}>
             <div>

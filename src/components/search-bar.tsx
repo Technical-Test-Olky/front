@@ -20,10 +20,14 @@ export const SearchBar = ({
   const chooseFile = () => {
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = "image/*";
+    input.accept = "image/jpeg, image/png, image/jpg";
     input.onchange = async (e) => {
       const target = e.target as HTMLInputElement;
       const file: File = (target.files as FileList)[0];
+      if (file && file.type === "image/webp") {
+        alert("Les fichiers .webp ne sont pas acceptés.");
+        return;
+      }
       setLoadingUpload(true);
       await onUpload(file);
       setLoadingUpload(false);

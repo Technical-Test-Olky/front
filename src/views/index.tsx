@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ImageList from "../components/images-list";
 import { SearchBar } from "../components/search-bar";
 import { usePhotoLibrary } from "../features/photo-library/hooks/use-photo-library";
+import { delayRequest } from "../features/utils";
 
 function App() {
   const { results, search, upload, get, totalPages, totalItems } =
@@ -22,8 +23,16 @@ function App() {
   };
 
   useEffect(() => {
-    get(currentPage - 1, limit);
-  }, [currentPage, limit]);
+    if (results.length === 0) {
+      delayRequest(
+        "search",
+        () => {
+          get(currentPage - 1, limit);
+        },
+        { timeout: 3000, doInitialCall: true }
+      );
+    }
+  }, [currentPage, limit, get]);
 
   return (
     <>
@@ -42,10 +51,10 @@ function App() {
           <option value="10">10</option>
         </select>
       </div>
-      <div>
+      <div className="mx-12 my-5 justify-center items-center">
         <ImageList listImage={results} />
       </div>
-      <div className="flex items-center justify-between p-4 bg-gray-100 border-t border-gray-300">
+      <div className="flex items-center justify-between mx-12 my-5 p-4 bg-gray-100 border-gray-300 rounded">
         <button
           disabled={
             currentPage - 1 <= 0 || currentPage === 1 || totalPages === 1
